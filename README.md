@@ -49,3 +49,9 @@ educational project
 
 ![img1](https://user-images.githubusercontent.com/90004713/194030137-96479ee5-b58f-4a97-b941-f0b4c7435f87.gif)
 
+<h3> Видео<h3>
+
+https://user-images.githubusercontent.com/90004713/194043581-874a21db-7578-40d8-b0b5-b238ad728840.mov
+
+
+
