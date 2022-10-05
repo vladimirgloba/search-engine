@@ -39,10 +39,13 @@ educational project
         <li>В исхоном коде есть файлы работающие с ForkJoin и составными запросами (всё обкатано)</li>
         <li> Параметры подключения к базе данных, параметры подключения jsoup, перечень и адреса сайтов храняться в файле properties.yaml</li>
         <li>Для запуска программы сначала необходимо запустить jar - файл (в корне проекта), внести изменеия в файл индекс (properties-templates-index), заменить http://localhost:8080 на свой хост, база данных с имнем search_engine (можно пустую) должна быть создана заранее(особенности
-            postgres)</li>
-        
+                postgres)</li>
     </ul>
 <h1>Скриншоты</h1>
-![img1](https://user-images.githubusercontent.com/90004713/194028010-5a7c87b1-5179-4302-a1b9-7e427c1d84ee.gif)
-![img1](https://user-images.githubusercontent.com/90004713/194028025-2d890faa-1e68-4ef2-b867-2ad6d158257b.gif)
-<h3> jar файл и файл конфигурации находятся в папке woker
+
+<h3> jar файл и файл конфигурации находятся в папке woker</h3>
+
+![img1](https://user-images.githubusercontent.com/90004713/194029295-f46ea481-86ad-4b3e-86bd-d886fa04b25f.gif)
+
+![img1](https://user-images.githubusercontent.com/90004713/194030137-96479ee5-b58f-4a97-b941-f0b4c7435f87.gif)
+
