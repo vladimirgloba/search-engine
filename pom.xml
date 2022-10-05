@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.1</version>
+		<relativePath/>
+	</parent>
+	<groupId>com.globa</groupId>
+	<artifactId>search-engine</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>search-engine</name>
+	<description>search engine</description>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-web</artifactId>
+	</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>5.3.23</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.15.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<version>2.7.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+<!--		&lt;!&ndash;        зависимости библиотек лемматизаторов&ndash;&gt;-->
+		<dependency>
+			<groupId>org.apache.lucene.morphology</groupId>
+			<artifactId>morph</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene.analysis</groupId>
+			<artifactId>morphology</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene.morphology</groupId>
+			<artifactId>dictionary-reader</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene.morphology</groupId>
+			<artifactId>english</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene.morphology</groupId>
+			<artifactId>russian</artifactId>
+			<version>1.5</version>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>github</id>
+			<name>GitHub Apache Maven Packages - Russian Morphology</name>
+			<url>https://maven.pkg.github.com/skillbox-java/russianmorphology</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${project.parent.version}</version>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

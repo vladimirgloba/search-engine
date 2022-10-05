@@ -1,0 +1,43 @@
+get:
+  services:
+#    - name: skillbox.ru
+#      url: https://www.skillbox.ru
+#    - name: playback.ru
+#      url: https://www.playback.ru
+#    - name: lenta.ru
+#      url: https://lenta.ru
+
+#    - name: radiomv.ru
+#      url: http://radiomv.ru
+#    - name: svetlovka.ru
+  #    url: https://www.svetlovka.ru
+  #  - name: ipfran.ru
+  #    url: https://ipfran.ru
+  #  - name: nikoartgallery.com
+#      url: https://nikoartgallery.com
+#    - name: et-cetera.ru
+#      url: https://et-cetera.ru/mobile
+    - name: lutherancathedral
+      url: https://www.lutherancathedral.ru
+#    - name: volochek.life
+#      url: https://volochek.life
+#  Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36
+#  Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6
+#
+
+  userAgent:  Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6
+spring:
+  datasource:
+    username: postgres
+    url: jdbc:postgresql://localhost:5432/search_engine
+    password: testtest
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: 'true'
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
