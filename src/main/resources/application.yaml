@@ -17,8 +17,8 @@ get:
 #      url: https://nikoartgallery.com
 #    - name: et-cetera.ru
 #      url: https://et-cetera.ru/mobile
-#    - name: lutherancathedral
-#      url: https://www.lutherancathedral.ru
+    - name: lutherancathedral
+      url: https://www.lutherancathedral.ru
 #    - name: volochek.life
 #      url: https://volochek.life
 #  Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36
