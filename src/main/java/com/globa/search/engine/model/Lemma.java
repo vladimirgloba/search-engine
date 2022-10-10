@@ -11,10 +11,13 @@ public class Lemma {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @Column(name = "lemma")
     private String lemma;
+
     @Column(name = "frequency", nullable = false)
     private int frequency;
+
     @Column(name = "site_id")
     private long site_id;
 
@@ -22,11 +25,10 @@ public class Lemma {
     public Lemma() {
     }
 
-    public Lemma( String lemma, int frequency,long site_id) {
-
+    public Lemma(String lemma, int frequency, long site_id) {
         this.lemma = lemma;
         this.frequency = frequency;
-        this.site_id=site_id;
+        this.site_id = site_id;
     }
 
     public long getId() {

@@ -1,7 +1,8 @@
 package com.globa.search.engine.model;
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,17 +12,20 @@ public class Field {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "selector")
     private String selector;
+
     @Column(name = "weight")
     private float weight;
 
     public Field() {
     }
 
-    public Field( String name, String selector, float weight) {
+    public Field(String name, String selector, float weight) {
 
         this.name = name;
         this.selector = selector;

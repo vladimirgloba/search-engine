@@ -1,4 +1,5 @@
 package com.globa.search.engine.repository;
+
 import com.globa.search.engine.model.Site;
 import com.globa.search.engine.model.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,14 +18,15 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
 
     @Transactional
     @Modifying
-    @Query( value ="update site  set status = ?1, status_time = ?2, last_error = ?3 where url = ?4",
+    @Query(value = "update site  set status = ?1, status_time = ?2, last_error = ?3 where url = ?4",
             nativeQuery = true)
-    void updateSiteByUrl(Status status, LocalDateTime status_time, String last_error,String url);
+    void updateSiteByUrl(Status status, LocalDateTime status_time, String last_error, String url);
+
     @Transactional
     @Modifying
-    @Query( value ="update site  set status = ?1, status_time = ?2, last_error = ?3 where id = ?4",
+    @Query(value = "update site  set status = ?1, status_time = ?2, last_error = ?3 where id = ?4",
             nativeQuery = true)
-    void updateSiteById(String status, LocalDateTime status_time, String last_error,Long idSite);
+    void updateSiteById(String status, LocalDateTime status_time, String last_error, Long idSite);
 
     ///////
 

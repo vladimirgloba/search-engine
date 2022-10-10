@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="site")
+@Table(name = "site")
 public class Site {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,19 +12,23 @@ public class Site {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
     @Column(name = "status_time")
     private LocalDateTime status_time;
-    @Column(columnDefinition="TEXT")
+
+    @Column(columnDefinition = "TEXT")
     private String last_error;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "url")
     private String url;
 
     public Site() {
     }
 
-    public Site( Status status, LocalDateTime status_time, String last_error, String name, String url) {
+    public Site(Status status, LocalDateTime status_time, String last_error, String name, String url) {
 
         this.status = status;
         this.status_time = status_time;
@@ -32,7 +36,6 @@ public class Site {
         this.name = name;
         this.url = url;
     }
-
 
 
     public Long getId() {
