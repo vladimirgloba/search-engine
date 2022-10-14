@@ -3,12 +3,9 @@ package com.globa.search.engine.data;
 import com.globa.search.engine.model.*;
 import com.globa.search.engine.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -91,7 +88,7 @@ public class SiteDataService {
 
     //пробный метод, пока оставлю
     public Page finedPageByPath(String path) {
-        List<Page> pages =pageRepository.findByPath(path);
+        List<Page> pages = pageRepository.findByPath(path);
         if (!pages.isEmpty()) {
             return pages.get(0);
         } else return null;
@@ -267,7 +264,7 @@ public class SiteDataService {
     public String getContentByIdPageAndIdSite(Long idSite, Long idPage) {
         List resultList = em.result("select content from page where id=" +
                 idPage + " and site_id=" + idSite + ";");
-        return (resultList.size() > 0 && (resultList.get(0) != null))?resultList.get(0).toString():"";
+        return (resultList.size() > 0 && (resultList.get(0) != null)) ? resultList.get(0).toString() : "";
     }
 
     @Transactional
