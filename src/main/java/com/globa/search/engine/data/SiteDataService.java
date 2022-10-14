@@ -4,6 +4,7 @@ import com.globa.search.engine.model.*;
 import com.globa.search.engine.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -11,15 +12,13 @@ import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Repository
-
-@Transactional
+@Service
 public class SiteDataService {
     //неиспользованные импорты и переменные необходимы при изменении
     // обхода страниц(в коде несколько реализаций), я их использовал
     // для тестирования скорости и памяти
-    @PersistenceContext
-    private EntityManager em;
+    @Autowired
+    private NativeQueryRepository em;
 
     @Autowired
     private PageRepository pageRepository;
@@ -243,7 +242,7 @@ public class SiteDataService {
 
     @Transactional
     public Long deleteALLFromDBWhereSiteNameAndGetSiteId(String nameSite, String pathSite) {
-        em.createNativeQuery(nativeQueryForDeleteSite(nameSite)).executeUpdate();
+        em.executeQuery(nativeQueryForDeleteSite(nameSite));
         Site site = new Site(Status.INDEXING, LocalDateTime.now(), "no error", nameSite, pathSite + "/");
         addSite(Status.INDEXING, LocalDateTime.now(), "no error", nameSite, pathSite + "/");
         return getIdSite(site);
@@ -252,7 +251,7 @@ public class SiteDataService {
     @Transactional
     public List<Long> getListIdPageByIdSite(Long idSite) {
         List<Long> lst = new ArrayList<>();
-        var result = em.createNativeQuery("select id from page where site_id = " + idSite + ";").getResultList();
+        var result = em.result("select id from page where site_id = " + idSite + ";");
         for (Object idPage : result) {
             System.out.println(idPage.toString());
         }
@@ -266,14 +265,14 @@ public class SiteDataService {
 
     @Transactional
     public String getContentByIdPageAndIdSite(Long idSite, Long idPage) {
-        List resultList = em.createNativeQuery("select content from page where id=" +
-                idPage + " and site_id=" + idSite + ";").getResultList();
+        List resultList = em.result("select content from page where id=" +
+                idPage + " and site_id=" + idSite + ";");
         return (resultList.size() > 0 && (resultList.get(0) != null))?resultList.get(0).toString():"";
     }
 
     @Transactional
     public void insertLemmasInDB(String query) {
-        em.createNativeQuery(query).executeUpdate();
+        em.executeQuery(query);
     }
 
     @Transactional

@@ -10,10 +10,10 @@ get:
 #    - name: radiomv.ru
 #      url: http://radiomv.ru
 #    - name: svetlovka.ru
-  #    url: https://www.svetlovka.ru
-  #  - name: ipfran.ru
-  #    url: https://ipfran.ru
-  #  - name: nikoartgallery.com
+#      url: https://www.svetlovka.ru
+#    - name: ipfran.ru
+#      url: https://ipfran.ru
+#    - name: nikoartgallery.com
 #      url: https://nikoartgallery.com
 #    - name: et-cetera.ru
 #      url: https://et-cetera.ru/mobile
