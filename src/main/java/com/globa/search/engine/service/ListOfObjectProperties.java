@@ -25,8 +25,6 @@ public class ListOfObjectProperties {
     public void setServices(List<Service> services) {
         this.services = services;
     }
-// Constructor, Getter, and Setter methods
-    // toString()
 
     public static class Service {
         private String name;
@@ -55,6 +53,6 @@ public class ListOfObjectProperties {
         public void setUrl(String url) {
             this.url = url;
         }
-// Constructor, Getter, and Setter methods
+
     }
 }

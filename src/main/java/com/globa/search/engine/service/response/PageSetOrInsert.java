@@ -4,6 +4,8 @@ import com.globa.search.engine.data.SiteDataService;
 import com.globa.search.engine.model.Page;
 import com.globa.search.engine.model.Site;
 import com.globa.search.engine.service.LemmaFinder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.io.IOException;
@@ -25,27 +28,31 @@ import java.util.Map;
 @Repository
 @Transactional
 public class PageSetOrInsert {
-    @PersistenceContext
-    private EntityManager em;
+    private static final Logger logger = LogManager.getLogger(PageSetOrInsert.class);
     @Autowired
     SiteDataService dataService;
-    @Autowired PageParameters pageParameters;
+
+    @Autowired
+    PageParameters pageParameters;
+    @PersistenceContext
+    private EntityManager em;
+
     @Transactional
-    public boolean nativeQueryForPage(String uri){
-        if(pageParameters(uri)){
-            System.out.println(getSQLQuery());
+    public boolean nativeQueryForPage(String uri) {
+        if (pageParameters(uri)) {
+            logger.info("сформирован SQL-запрос:\n"+getSQLQuery().get(0));
             em.createNativeQuery(getSQLQuery().get(0)).executeUpdate();
-            Site site=dataService.finedSiteByUrl(pageParameters.getSitePath());
-Long idSite=dataService.getIdSite(site);
+            Site site = dataService.finedSiteByUrl(pageParameters.getSitePath());
+            Long idSite = dataService.getIdSite(site);
             dataService.add(new Page(pageParameters.getPath(), 200,
                     pageParameters.getContent(),
                     idSite));
-            System.out.println(getSQLQuery().get(1));
-            em.createNativeQuery(getSQLQuery().get(1)).executeUpdate();;
+            logger.info("сформирован SQL-запрос:\n"+getSQLQuery().get(1));
+            em.createNativeQuery(getSQLQuery().get(1)).executeUpdate();
+            logger.info(" процесс добавления завершён ");
             System.out.println(" процесс добавления завершён ");
             return true;
-        }
-        else
+        } else
 
 
             return false;
@@ -53,33 +60,31 @@ Long idSite=dataService.getIdSite(site);
 
 
     /////////////////////////////////
-    private  boolean pageParameters(String uri){
+    private boolean pageParameters(String uri) {
 
-        List <String> allPath=getPath(uri);
-        String content="";
-        Map<String,Integer> frequencyMap=new HashMap<>();
-        Map<String,Float>relevanceMap=new HashMap<>();
-       Connection connection= Jsoup.connect(allPath.get(0));
+        List<String> allPath = getPath(uri);
+        String content = "";
+        Map<String, Integer> frequencyMap = new HashMap<>();
+        Map<String, Float> relevanceMap = new HashMap<>();
+        Connection connection = Jsoup.connect(allPath.get(0));
         try {
-            Document document=connection.get();
-            content=document.toString();
-            frequencyMap= LemmaFinder.getInstance().collectLemmas(content);
-            Map<String,Integer>relevanceMapFromTitle=LemmaFinder.getInstance().collectLemmas(document.title());
-            Map<String,Integer>relevanceMapFromBOdy=LemmaFinder.getInstance().collectLemmas(document.tagName("body").toString());
-            for(Map.Entry<String,Integer> entry:relevanceMapFromTitle.entrySet()){
-                if(relevanceMap.containsKey(entry.getKey())){
-                    relevanceMap.put(entry.getKey(),relevanceMap.get(entry.getKey())+entry.getValue());
-                }
-                else {
+            Document document = connection.get();
+            content = document.toString();
+            frequencyMap = LemmaFinder.getInstance().collectLemmas(content);
+            Map<String, Integer> relevanceMapFromTitle = LemmaFinder.getInstance().collectLemmas(document.title());
+            Map<String, Integer> relevanceMapFromBOdy = LemmaFinder.getInstance().collectLemmas(document.tagName("body").toString());
+            for (Map.Entry<String, Integer> entry : relevanceMapFromTitle.entrySet()) {
+                if (relevanceMap.containsKey(entry.getKey())) {
+                    relevanceMap.put(entry.getKey(), relevanceMap.get(entry.getKey()) + entry.getValue());
+                } else {
                     relevanceMap.put(entry.getKey(), Float.valueOf(entry.getValue()));
                 }
             }
-            for(Map.Entry<String,Integer> entry:relevanceMapFromBOdy.entrySet()){
-                if(relevanceMap.containsKey(entry.getKey())){
-                    relevanceMap.put(entry.getKey(),relevanceMap.get(entry.getKey())+(entry.getValue()*0.8F));
-                }
-                else {
-                    relevanceMap.put(entry.getKey(), Float.valueOf(entry.getValue()*0.8F));
+            for (Map.Entry<String, Integer> entry : relevanceMapFromBOdy.entrySet()) {
+                if (relevanceMap.containsKey(entry.getKey())) {
+                    relevanceMap.put(entry.getKey(), relevanceMap.get(entry.getKey()) + (entry.getValue() * 0.8F));
+                } else {
+                    relevanceMap.put(entry.getKey(), Float.valueOf(entry.getValue() * 0.8F));
                 }
             }
             pageParameters.setSitePath(allPath.get(1));
@@ -91,51 +96,47 @@ Long idSite=dataService.getIdSite(site);
             e.printStackTrace();
             return false;
         }
-        if(pageParameters==null||pageParameters.getContent().isEmpty()||
-        pageParameters.getPath().isEmpty()||pageParameters.getSitePath().isEmpty()
-        ||pageParameters.getRelevanceMap().isEmpty()){
-            return false;
-        }else
-        return true;
+        return pageParameters != null && !pageParameters.getContent().isEmpty() &&
+                !pageParameters.getPath().isEmpty() && !pageParameters.getSitePath().isEmpty()
+                && !pageParameters.getRelevanceMap().isEmpty();
     }
 
 
-    private List<String> getSQLQuery(){
-        String relevanceString="";
-        Integer iterator=1;
-Map <String,Float>relevanceMap=pageParameters.getRelevanceMap();
-Map<String,Integer>oldLemmasMap=new HashMap<>();
-String oldContent=dataService.finedContentFromPageByPath(pageParameters.getPath());
-String oldLemmasInTable="";
-if(oldContent.length()>0){
-    try {
-        oldLemmasMap=LemmaFinder.getInstance().collectLemmas(oldContent);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+    private List<String> getSQLQuery() {
+        String relevanceString = "";
+        Integer iterator = 1;
+        Map<String, Float> relevanceMap = pageParameters.getRelevanceMap();
+        Map<String, Integer> oldLemmasMap = new HashMap<>();
+        String oldContent = dataService.finedContentFromPageByPath(pageParameters.getPath());
+        String oldLemmasInTable = "";
+        if (oldContent.length() > 0) {
+            try {
+                oldLemmasMap = LemmaFinder.getInstance().collectLemmas(oldContent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-}
-for(Map.Entry<String,Integer> entry: oldLemmasMap.entrySet()){
-    oldLemmasInTable=oldLemmasInTable+"("+iterator+", '"+entry.getKey()+"'),\n";
-    iterator++;
-}
-        iterator=1;
-if(oldLemmasInTable.length()>0) {
-    oldLemmasInTable = oldLemmasInTable.substring(0, oldLemmasInTable.length() - 2) + "\n";
-}
-else {
-    oldLemmasInTable="("+1+", '"+'a'+"')";
-}
-for(Map.Entry <String,Float> entry:relevanceMap.entrySet()){
-    relevanceString=relevanceString+"("+iterator+", "+
-            "'"+entry.getKey()+"', "+
-            entry.getValue()+"),"+"\n";
-iterator++;
-}
+        }
+        for (Map.Entry<String, Integer> entry : oldLemmasMap.entrySet()) {
+            oldLemmasInTable = oldLemmasInTable + "(" + iterator + ", '" + entry.getKey() + "'),\n";
+            iterator++;
+        }
+        iterator = 1;
+        if (oldLemmasInTable.length() > 0) {
+            oldLemmasInTable = oldLemmasInTable.substring(0, oldLemmasInTable.length() - 2) + "\n";
+        } else {
+            oldLemmasInTable = "(" + 1 + ", '" + 'a' + "')";
+        }
+        for (Map.Entry<String, Float> entry : relevanceMap.entrySet()) {
+            relevanceString = relevanceString + "(" + iterator + ", " +
+                    "'" + entry.getKey() + "', " +
+                    entry.getValue() + ")," + "\n";
+            iterator++;
+        }
 
-        relevanceString=relevanceString.substring(0,relevanceString.length()-2)+"\n";
+        relevanceString = relevanceString.substring(0, relevanceString.length() - 2) + "\n";
 
-        String nativeQueryFirst=
+        String nativeQueryFirst =
 
                 new StringBuilder().append("DO $$\n")
                         .append("DECLARE\n").append("site_path varchar(255):= '")
@@ -170,7 +171,7 @@ iterator++;
                         .append("END $$;").toString();
 
 
-        String nativeQuerySecond=
+        String nativeQuerySecond =
 
                 new StringBuilder().append("DO $$\n")
                         .append("DECLARE\n")
@@ -297,17 +298,17 @@ iterator++;
 //                        .append("\n").append("DROP TABLE buffer; ").append("\n").append("iterator:=1;").append("\n")
 //                        .append(" END $$; ").append("\n")
 //                        .toString();
-        nativeQuerySecond=nativeQuerySecond.replaceAll(":=","\\\\:=");
-nativeQueryFirst=nativeQueryFirst.replaceAll(":=","\\\\:=");
-List<String> stringList=new ArrayList<>();
+        nativeQuerySecond = nativeQuerySecond.replaceAll(":=", "\\\\:=");
+        nativeQueryFirst = nativeQueryFirst.replaceAll(":=", "\\\\:=");
+        List<String> stringList = new ArrayList<>();
         stringList.add(nativeQueryFirst);
         stringList.add(nativeQuerySecond);
-return stringList;
+        return stringList;
 
     }
 
     /////////////////
-    private List<String> getPath(String uri){
+    private List<String> getPath(String uri) {
         URL url;
         try {
             url = new URL(uri);
@@ -318,11 +319,11 @@ return stringList;
         String path = url.getPath();
         String sitePath = uri.substring(0, uri.indexOf(path));
         sitePath += "/";
-        List<String>list=new ArrayList<>();
+        List<String> list = new ArrayList<>();
         list.add(uri);
         list.add(sitePath);
         list.add(path);
-return list;
+        return list;
     }
 
 }

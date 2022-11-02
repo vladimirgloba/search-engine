@@ -2,6 +2,8 @@ package com.globa.search.engine.service;
 
 import com.globa.search.engine.data.SiteDataService;
 import com.globa.search.engine.model.Page;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
@@ -30,6 +32,7 @@ public class RunnableWithHardQuery implements Runnable { private SiteDataService
     private HashSet<String> noRepeat=new HashSet<>();
     private Long idSite=0l;
     private String error="";
+    private static final Logger logger = LogManager.getLogger(ResultService.class);
 
     public RunnableWithHardQuery(UserAgentProperties userAgentProperties,SiteDataService dataService, String siteName, String pathName) {
         this.dataService = dataService;
@@ -64,7 +67,7 @@ public class RunnableWithHardQuery implements Runnable { private SiteDataService
             try {
                 url = new URL(buffer);
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
 
             }
             System.out.println(buffer);
@@ -78,24 +81,25 @@ public class RunnableWithHardQuery implements Runnable { private SiteDataService
                         .execute();
                 System.out.println(response.toString());
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                 content=null;
             } catch (HttpStatusException e) {
+                logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                 content=null;
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                 content=null;
             } catch (NullPointerException e) {
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                 content=null;
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
             }
 
             catch (Exception e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                 content=null;
             }
@@ -106,10 +110,10 @@ public class RunnableWithHardQuery implements Runnable { private SiteDataService
             } catch (NullPointerException e) {
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                 code=404;
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
             }
             catch (Exception e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                 code=404;
             }
@@ -125,29 +129,31 @@ public class RunnableWithHardQuery implements Runnable { private SiteDataService
                     try {
                         content = response.parse().toString();
                     } catch (UnsupportedMimeTypeException e) {
-                        e.printStackTrace();
+                        logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                         content = null;
                         code=404;
                         error= error=error+"ошибка при открытии контента страницы"+" код = 404 on path = "+buffer+"\n";
                     } catch (MalformedURLException e) {
-                        e.printStackTrace();
+                        logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                         error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                         content=null;
                     } catch (HttpStatusException e) {
+                        logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                         error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                         content=null;
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
+                        logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                         error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                         content=null;
                     } catch (NullPointerException e) {
                         error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                         content=null;
-                        e.printStackTrace();
+                        logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                     }
 
                     catch (Exception e) {
-                        e.printStackTrace();
+                        logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                         error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                         content=null;
                     }

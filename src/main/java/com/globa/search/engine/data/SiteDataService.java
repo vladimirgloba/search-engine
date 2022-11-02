@@ -1,7 +1,10 @@
 package com.globa.search.engine.data;
 
+import com.globa.search.engine.controller.AddingController;
 import com.globa.search.engine.model.*;
 import com.globa.search.engine.repository.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +35,7 @@ public class SiteDataService {
     @Autowired
     private SiteRepository siteRepository;
 
-
+    private static final Logger logger = LogManager.getLogger(SiteDataService.class);
     public SiteDataService() {
 
     }
@@ -115,7 +118,7 @@ public class SiteDataService {
             bufferMap.put(idPage, Float.valueOf(String.valueOf(total)));
         }
         for (Map.Entry<Long, Float> entry : bufferMap.entrySet()) {
-            System.out.println("idPage = " + entry.getKey() + " rank = " + entry.getValue());
+
         }
         return bufferMap;
     }
@@ -150,6 +153,8 @@ public class SiteDataService {
         try {
             return lemmaRepository.findByLemma(lemmaName, siteId).get(0).getId();
         } catch (Exception e) {
+            logger.error((char) 27 + "[31mWarning! "+"ошибка лемматизатора в методе lemmaRepository.findByLemma" + (char)27 + "[0m");
+
             return 0;
         }
     }
@@ -162,6 +167,7 @@ public class SiteDataService {
         try {
             return lemmaRepository.findByLemma(lemmaName, idSite).get(0).getFrequency();
         } catch (Exception e) {
+            logger.error((char) 27 + "[31mWarning! "+"ошибка лемматизатора в методе lemmaRepository.findByLemma" + (char)27 + "[0m");
             return 0;
         }
     }
@@ -170,6 +176,7 @@ public class SiteDataService {
         try {
             return siteRepository.findBySIteUrl(url).get(0);
         } catch (Exception e) {
+            logger.error((char) 27 + "[31mWarning! "+"ошибка лемматизатора в методе siteRepository.findBySIteUrl" + (char)27 + "[0m");
             return null;
         }
     }
@@ -250,7 +257,7 @@ public class SiteDataService {
         List<Long> lst = new ArrayList<>();
         var result = em.result("select id from page where site_id = " + idSite + ";");
         for (Object idPage : result) {
-            System.out.println(idPage.toString());
+
         }
         if (!result.isEmpty()) {
             for (Object object : result) {

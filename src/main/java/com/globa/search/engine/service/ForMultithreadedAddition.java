@@ -2,6 +2,9 @@ package com.globa.search.engine.service;
 
 import com.globa.search.engine.data.SiteDataService;
 import com.globa.search.engine.model.Page;
+import com.globa.search.engine.service.response.AddingOrUpdatingPage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
@@ -30,7 +33,7 @@ public class ForMultithreadedAddition implements Runnable{
     private HashSet<String>noRepeat=new HashSet<>();
     private Long idSite=0l;
     private String error="";
-
+    private static final Logger logger = LogManager.getLogger(ForMultithreadedAddition.class);
     public ForMultithreadedAddition(UserAgentProperties userAgentProperties,SiteDataService dataService, String siteName, String pathName) {
         this.dataService = dataService;
         this.userAgentProperties=userAgentProperties;
@@ -46,7 +49,7 @@ public class ForMultithreadedAddition implements Runnable{
     }
     private void getSiteId (String nameSite,String pathSite ){
         this.idSite=dataService.deleteALLFromDBWhereSiteNameAndGetSiteId(nameSite,pathSite);
-        System.out.println(idSite);
+        logger.info("обработка сайта "+siteName);
     }
 
     public void recursiveSiteCrawling(){
@@ -60,16 +63,17 @@ public class ForMultithreadedAddition implements Runnable{
 
 
         if (isValidUrl(buffer) && noRepeat.add(buffer)) {
-            System.out.println("В список");
+
             URL url = null;
             try {
                 url = new URL(buffer);
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"ошибка при проверке URL:\n"+e.getMessage() + (char)27 + "[0m");
+
 
             }
-            System.out.println(buffer);
-            System.out.println(url.getPath());
+
+
             Connection.Response response = null;
 
             try {
@@ -78,22 +82,24 @@ public class ForMultithreadedAddition implements Runnable{
                         .timeout(5000)
                         .execute();
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"ошибка при проверке URL:\n"+e.getMessage() + (char)27 + "[0m");
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                 content=null;
             } catch (HttpStatusException e) {
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
+                logger.error((char) 27 + "[31mWarning! "+"ошибка при проверке HttpStatus:\n"+e.getMessage() + (char)27 + "[0m");
                 content=null;
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"оштбка при проверке IOException:\n"+e.getMessage() + (char)27 + "[0m");
             } catch (NullPointerException e) {
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
+                logger.error((char) 27 + "[31mWarning! "+"ошибка при проверке NullPointer:\n"+e.getMessage() + (char)27 + "[0m");
                 content=null;
-                e.printStackTrace();
+
             }
 
             catch (Exception e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                 content=null;
             }
@@ -104,10 +110,10 @@ public class ForMultithreadedAddition implements Runnable{
             } catch (NullPointerException e) {
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                 code=404;
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"ошибка при проверке NullPointer:\n"+e.getMessage() + (char)27 + "[0m");
             }
             catch (Exception e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"ошибка:\n"+e.getMessage() + (char)27 + "[0m");
                 error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                 code=404;
             }
@@ -123,27 +129,28 @@ else{
                 try {
                     content = response.parse().toString();
                 } catch (UnsupportedMimeTypeException e) {
-                    e.printStackTrace();
+                    logger.error((char) 27 + "[31mWarning! "+"ошибка при проверке UnsupportedMimeType:\n"+e.getMessage() + (char)27 + "[0m");
                     content = null;
                     code=404;
                     error= error=error+"ошибка при открытии контента страницы"+" код = 404 on path = "+buffer+"\n";
                 } catch (MalformedURLException e) {
-                    e.printStackTrace();
+                    logger.error((char) 27 + "[31mWarning! "+"ошибка при проверке MalformedURL:\n"+e.getMessage() + (char)27 + "[0m");
                     error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                     content=null;
                 } catch (HttpStatusException e) {
+                    logger.error((char) 27 + "[31mWarning! "+"ошибка при проверке HttpStatus:\n"+e.getMessage() + (char)27 + "[0m");
                     error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                     content=null;
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error((char) 27 + "[31mWarning! "+"ошибка:\n"+e.getMessage() + (char)27 + "[0m");
                 } catch (NullPointerException e) {
                     error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                     content=null;
-                    e.printStackTrace();
+                    logger.error((char) 27 + "[31mWarning! "+"ошибка при проверке NullPointer:\n"+e.getMessage() + (char)27 + "[0m");
                 }
 
                 catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error((char) 27 + "[31mWarning! "+"ошибка:\n"+e.getMessage() + (char)27 + "[0m");
                     error=error+e.getMessage()+" код = "+code+" on path = "+buffer+"\n";
                     content=null;
                 }
@@ -156,13 +163,12 @@ else{
             //System.out.println("in pageList size of list = "+pageList.size()+" url = "+buffer +"content size = "+content.length()+" code = "+code);
             if (content != null) {
                 Document document = Jsoup.parse(content);
-                System.out.println("парсинг для "+buffer);
+                logger.info("парсинг для "+buffer);
 
                 Elements linksOnPage = document.select("a[href]");
 
                 for (Element element : linksOnPage) {
                     boolean ff=element.attr("abs:href").contains(siteName);
-                    System.out.println(element.attr("abs:href")+" = "+siteName+" "+ff+ "=" +isValidUrl(element.attr("abs:href")));
                     buffer = element.attr("abs:href");
 
                     if ( buffer.contains(siteName)) {
@@ -172,7 +178,7 @@ else{
                 }
             }
             }else {
-            System.out.println("не проходит по параметрам");
+            logger.info("не проходит по параметрам");
         }
         }
 
@@ -209,22 +215,22 @@ else{
                 }
 
             } catch (UnsupportedMimeTypeException e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"ошибка:\n"+e.getMessage() + (char)27 + "[0m");
                
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"ошибка:\n"+e.getMessage() + (char)27 + "[0m");
 
             } catch (HttpStatusException e) {
-
+                logger.error((char) 27 + "[31mWarning! "+"ошибка:\n"+e.getMessage() + (char)27 + "[0m");
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"ошибка:\n"+e.getMessage() + (char)27 + "[0m");
             } catch (NullPointerException e) {
 
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"ошибка:\n"+e.getMessage() + (char)27 + "[0m");
             }
 
             catch (Exception e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"ошибка:\n"+e.getMessage() + (char)27 + "[0m");
             }
 
             return resultMap;

@@ -2,6 +2,8 @@ package com.globa.search.engine.service;
 
 import com.globa.search.engine.data.SiteDataService;
 import com.globa.search.engine.model.Page;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.UnsupportedMimeTypeException;
@@ -31,11 +33,12 @@ public class ParserForPage {
     String content = "";
     Long idSite = 0L;
     int code = 0;
-
+    private static final Logger logger = LogManager.getLogger(PageListFinder.class);
 
     public ParserForPage() {
 
     }
+
 
     public String getError() {
         return error;
@@ -95,19 +98,20 @@ public class ParserForPage {
 
         try {
             url = new URL(bufferPath);
-            System.out.println(bufferPath);
+
         } catch (MalformedURLException e) {
             error=error+e.getMessage()+"не соответствует формат адреса - "+bufferPath+"\n";
+            logger.error((char) 27 + "[31mWarning! "+"не соответствует формат адреса - "+bufferPath+"ошибка :\n"+e.getMessage() + (char)27 + "[0m");
         }
         if (isValidUrl(bufferPath) && pathList.add(url.getPath())) {
-            System.out.println(url.getPath());
+
             Connection.Response response = null;
             try {
                 response = Jsoup.connect(bufferPath).userAgent(userAgentProperties.getUserAgent())
                         .timeout(5000)
                         .execute();
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error((char) 27 + "[31mWarning! "+"не соответствует формат адреса - "+bufferPath+"ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                 error=error+e.getMessage()+" код = "+code+" on path = "+bufferPath+"\n";
                 content=null;
             }
@@ -120,25 +124,23 @@ public class ParserForPage {
                 try {
                     content = response.parse().toString();
                 } catch (UnsupportedMimeTypeException e) {
-                    e.printStackTrace();
+                    logger.error((char) 27 + "[31mWarning! "+bufferPath+"ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                     content = null;
                     error= error=error+"ошибка при открытии контента страницы"+" код = "+code+" on path = "+bufferPath+"\n";
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error((char) 27 + "[31mWarning! "+"ошибка :\n"+e.getMessage() + (char)27 + "[0m");
                     content = null;
                     error= error=error+"ошибка при открытии контента страницы"+" код = "+code+" on path = "+bufferPath+"\n";
                 }
             }
             pageList.add(new Page(url.getPath(), code, content, idSite));
-            System.out.println("in pageList size of list = "+pageList.size()+" url = "+bufferPath +"content size = "+content.length()+" code = "+code);
             if (content != null) {
                 Document document = Jsoup.parse(content);
-                System.out.println("парсинг для "+bufferPath);
-
+                logger.info("парсинг для "+bufferPath);
                 Elements linksOnPage = document.select("a[href]");
                 for (Element element:linksOnPage){
                     boolean ff=element.attr("abs:href").contains(parentPath);
-                    System.out.println(element.attr("abs:href")+" = "+parentPath+" "+ff+ "=" +isValidUrl(element.attr("abs:href")));
+
                 }
                 for (Element page1 : linksOnPage) {
 

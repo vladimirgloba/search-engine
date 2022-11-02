@@ -1,5 +1,7 @@
 package com.globa.search.engine.service.response;
 import com.globa.search.engine.data.SiteDataService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.net.MalformedURLException;
@@ -12,6 +14,7 @@ public class AddingOrUpdatingPage {
     @Autowired
     SiteDataService dataService;
 
+    private static final Logger logger = LogManager.getLogger(AddingOrUpdatingPage.class);
     private boolean uriInDataBase(String uri){
         Pattern pattern=Pattern.compile("^(http(s)?://)?[a-z0-9-]+\\.(.[a-z0-9-]+)+(:[0-9]+)?(/.*)?$");
         Matcher matcher= pattern.matcher(uri);
@@ -20,6 +23,7 @@ public class AddingOrUpdatingPage {
            try {
                url = new URL(uri);
            } catch (MalformedURLException e) {
+               logger.error((char) 27 + "[31mWarning! "+"ошибка при проверке URL \n"+e.getMessage() + (char)27 + "[0m");
                e.printStackTrace();
                return false;
            }

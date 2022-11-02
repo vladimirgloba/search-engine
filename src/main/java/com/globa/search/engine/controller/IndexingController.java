@@ -7,6 +7,8 @@ import com.globa.search.engine.service.UserAgentProperties;
 import com.globa.search.engine.service.response.NoError;
 import com.globa.search.engine.service.response.ResponseError;
 import com.globa.search.engine.service.response.ResponseForIndexing;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,7 +47,7 @@ public class IndexingController {
 
     private Map<String, String> pathAndNameSite = new HashMap<>();
     private ExecutorService service = Executors.newSingleThreadExecutor();
-
+    private static final Logger logger = LogManager.getLogger(IndexingController.class);
     public IndexingController() {
     }
 
@@ -53,17 +55,21 @@ public class IndexingController {
     @RequestMapping("/startIndexing")
     @ResponseBody
     public Object indexing() {
+        logger.info("инициализация контроллера \"/startIndexing\"");
         getListOfSite();
         service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (Map.Entry<String, String> entry : pathAndNameSite.entrySet()) {
+            logger.info("инициализация многопоточного режима \"/startIndexing\"");
             service.execute(new ForMultithreadedAddition(userAgentProperties, dataService, entry.getValue(), entry.getKey()));
         }
 
 
         service.shutdown();
         if (!service.isTerminated()) {
+            logger.info("успешное завершение работы контроллера \"/startIndexing\"");
             return noError;
         } else
+            logger.error((char) 27 + "[31mWarning! "+"ошибка в условии:!service.isTerminated()" + (char)27 + "[0m");
             return error;
     }
 
@@ -79,10 +85,13 @@ public class IndexingController {
     @RequestMapping("/stopIndexing")
     @ResponseBody
     public Object stoIndexing() {
+        logger.info("инициализация контроллера \"/stopIndexing\"");
         if (!service.isTerminated()) {
             service.shutdownNow();
+            logger.info("успешное завершение работы контроллера \"/startIndexing\"");
             return noError;
         } else {
+            logger.error((char) 27 + "[31mWarning! "+"ошибка в условии:!service.isTerminated()" + (char)27 + "[0m");
             return error;
         }
     }

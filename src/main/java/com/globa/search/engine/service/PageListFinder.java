@@ -5,6 +5,8 @@ import com.globa.search.engine.model.Page;
 
 import com.globa.search.engine.model.Site;
 import com.globa.search.engine.service.response.ResponseForSearchQueryFirstLevel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +20,7 @@ public class PageListFinder {
     @Autowired
     private ResultService resultService;
 private int totalSize;
-
+    private static final Logger logger = LogManager.getLogger(PageListFinder.class);
     public PageListFinder() {
     }
 
@@ -73,7 +75,7 @@ private int totalSize;
                 System.out.println("result list size = "+resultList.size());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error((char) 27 + "[31mWarning! "+"ошибка :\n"+e.getMessage() + (char)27 + "[0m");
             return new ArrayList<>();
         }
         return resultList;
@@ -161,7 +163,7 @@ if(buffer.size()==1&&(actualValue.getValue()==(Integer)0)){
 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error((char) 27 + "[31mWarning! "+"ошибка :\n"+e.getMessage() + (char)27 + "[0m");
 
         }
         this.totalSize=resultService.getTotalSize();

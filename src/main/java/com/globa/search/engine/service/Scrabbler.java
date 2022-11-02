@@ -4,6 +4,8 @@ import com.globa.search.engine.data.SiteDataService;
 import com.globa.search.engine.model.Page;
 import com.globa.search.engine.model.Site;
 import com.globa.search.engine.model.Status;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,10 +28,14 @@ import java.util.regex.Pattern;
 public class Scrabbler extends RecursiveAction {
     @Autowired
     private SiteDataService dataService;
+
     @Autowired
     private UserAgentProperties userAgentProperties;
+
     @Autowired
     private ListOfObjectProperties list;
+
+    private static final Logger logger = LogManager.getLogger(ResultService.class);
     private HashSet<String> links=new HashSet<>();
     private String nameOffSite;
     private String path;
@@ -81,7 +87,7 @@ public class Scrabbler extends RecursiveAction {
         try {
             url = new URL(path);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
         }
         if (!links.contains(url.getPath()) && (checkUrl(path))) {
             System.out.println("В список = "+path);
@@ -100,6 +106,7 @@ if(response.statusCode()==200) {
     }
      catch (Exception e) {
         buffer=null;
+         logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
 
     }
     dataService.add(new Page(url.getPath(), response.statusCode(),
@@ -126,7 +133,7 @@ if(response.statusCode()==200) {
             } catch (IOException e) {
                 e.printStackTrace();
                 dataService.add(new Page(url.getPath(), response.statusCode(), null,idSite));
-
+                logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
 
                 return null;
             }
@@ -162,6 +169,7 @@ catch (Exception e){
     System.out.println(list.getServices().size());
     Status status=Status.FAILED;
     dataService.updateSite(status,LocalDateTime.now(),e.getMessage(),mainUrl+"/");
+    logger.error((char) 27 + "[31mWarning! ошибка :\n"+e.getMessage() + (char)27 + "[0m");
 }
 }
     }

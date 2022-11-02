@@ -47,9 +47,9 @@ public class ResponseForSearchQueryFromAllSite {
     }
     public void getResponse(String query){
         List<Site>allSites=dataService.finedAllSites();
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++"+allSites.size());
+
         for(Site site:allSites){
-            System.out.println(site.getUrl());
+
             this.data.addAll(listFinder.sortedPagesMapWithSQL(query, site.getUrl()));
             this.count=this.count+listFinder.getTotalSize();
         }
