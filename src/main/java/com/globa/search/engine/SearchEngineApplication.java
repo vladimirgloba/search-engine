@@ -13,6 +13,7 @@ public class SearchEngineApplication {
 
         SpringApplication.run(SearchEngineApplication.class, args);
         logger.info("проверка загрузки приложения - успешно уровень логирования = "+logger.getLevel());
+
     }
 
 }
