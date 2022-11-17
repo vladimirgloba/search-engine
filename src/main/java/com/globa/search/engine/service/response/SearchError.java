@@ -25,8 +25,9 @@ public class SearchError {
     public void setError(String error) {
         this.error = error;
     }
-    public void getForError(){
-        this.result=false;
-        this.error="Задан пустой поисковый запрос";
+
+    public void getForError() {
+        this.result = false;
+        this.error = "Задан пустой поисковый запрос";
     }
 }

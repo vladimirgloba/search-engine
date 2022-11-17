@@ -9,7 +9,7 @@ public class PageParameters {
     private String sitePath;
     private String path;
     private String content;
-    private Map<String,Float> relevanceMap;
+    private Map<String, Float> relevanceMap;
 
     public PageParameters() {
     }

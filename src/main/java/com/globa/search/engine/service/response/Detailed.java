@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Detailed {
-  private   String url;
-  private   String name;
-  private   Status status;
-  private   Long statusTime;
-   private String error;
-  private   Long pages;
-  private   Long lemmas;
+    private String url;
+    private String name;
+    private Status status;
+    private Long statusTime;
+    private String error;
+    private Long pages;
+    private Long lemmas;
 
     public Detailed() {
     }

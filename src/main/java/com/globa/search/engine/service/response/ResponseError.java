@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ResponseError {
 
-    Boolean result=false;
+    Boolean result = false;
 
-    String error= "Индексация не запущена";
+    String error = "Индексация не запущена";
 
     public ResponseError() {
     }
@@ -25,6 +25,6 @@ public class ResponseError {
     }
 
     public void setError() {
-        this.error ="Индексация не запущена";
+        this.error = "Индексация не запущена";
     }
 }

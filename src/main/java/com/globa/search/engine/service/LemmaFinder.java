@@ -60,6 +60,7 @@ public class LemmaFinder {
 
         return lemmas;
     }
+
     /**
      * @param text текст из которого собираем все леммы
      * @return набор уникальных лемм найденных в тексте

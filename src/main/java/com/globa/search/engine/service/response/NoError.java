@@ -4,10 +4,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class NoError {
-    private boolean result=true;
+    private boolean result = true;
 
     public NoError() {
     }
+
     public boolean isResult() {
         return result;
     }

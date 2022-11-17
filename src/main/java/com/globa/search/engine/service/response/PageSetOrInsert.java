@@ -42,14 +42,14 @@ public class PageSetOrInsert {
     @Transactional
     public boolean nativeQueryForPage(String uri) {
         if (pageParameters(uri)) {
-            logger.info("сформирован SQL-запрос:\n"+getSQLQuery().get(0));
+            logger.info("сформирован SQL-запрос:\n" + getSQLQuery().get(0));
             em.createNativeQuery(getSQLQuery().get(0)).executeUpdate();
             Site site = dataService.finedSiteByUrl(pageParameters.getSitePath());
             Long idSite = dataService.getIdSite(site);
             dataService.add(new Page(pageParameters.getPath(), 200,
                     pageParameters.getContent(),
                     idSite));
-            logger.info("сформирован SQL-запрос:\n"+getSQLQuery().get(1));
+            logger.info("сформирован SQL-запрос:\n" + getSQLQuery().get(1));
             em.createNativeQuery(getSQLQuery().get(1)).executeUpdate();
             logger.info(" процесс добавления завершён ");
             System.out.println(" процесс добавления завершён ");

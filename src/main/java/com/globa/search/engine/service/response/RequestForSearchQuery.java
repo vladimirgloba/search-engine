@@ -48,7 +48,7 @@ public class RequestForSearchQuery {
         } else {
             logger.info("успешное завершение обработки запроса \"/search\"");
             System.out.println(responseForSearchQueryFromAllSite.getData().size());
-            System.out.println(responseForSearchQueryFromAllSite.getCount()+" = count++++++++++++++++++++++++++");
+            System.out.println(responseForSearchQueryFromAllSite.getCount() + " = count++++++++++++++++++++++++++");
             return responseForSearchQueryFromAllSite;
         }
     }
@@ -65,7 +65,7 @@ public class RequestForSearchQuery {
 
             object = responseForOneSite(siteName, searchQuery);
         }
-        if (siteName.length()==0 && searchQuery.length() > 2) {
+        if (siteName.length() == 0 && searchQuery.length() > 2) {
             System.out.println("правильно");
             object = responseForAllSite(searchQuery);
         }

@@ -21,26 +21,27 @@ public interface IndexRepository extends JpaRepository<Index, Long> {
 
     @Query(value = "SELECT * FROM index  WHERE  page_id = ?1 AND lemma_id IN ?2", nativeQuery = true)
     List<Index> finedIndexByIdLemmaAndListOfIdPages(Long idPage, List<Long> idLemmas);
+
     //конкатенация строк нужна для удобства просмотра кода при отображении в консоли
     @Transactional
     @Modifying
     @Query(value =
-                    "select path, sum_rank\n"+
-                    "from\n"+
-                    "(select page_id, sum(rank) as sum_rank \n"+
-                    "from Index where page_id in(\n"+
-                    "select page_id from index \n"+
-                    "where lemma_id in\n"+
-                    "(select id from lemma where lemma =?1\n"+
-                    " and site_id=?3\n"+
-                    ")group by page_id)\n"+
-                    "and lemma_id in(\n"+
-                    "    select id from lemma \n"+
-                    "where lemma in ?2\n"+
-                    " and site_id=?3\n"+
-                    ")group by page_id\n"+
-                    "order by sum_rank desc) as foo\n"+
-                    "LEFT OUTER JOIN page\n"+
+            "select path, sum_rank\n" +
+                    "from\n" +
+                    "(select page_id, sum(rank) as sum_rank \n" +
+                    "from Index where page_id in(\n" +
+                    "select page_id from index \n" +
+                    "where lemma_id in\n" +
+                    "(select id from lemma where lemma =?1\n" +
+                    " and site_id=?3\n" +
+                    ")group by page_id)\n" +
+                    "and lemma_id in(\n" +
+                    "    select id from lemma \n" +
+                    "where lemma in ?2\n" +
+                    " and site_id=?3\n" +
+                    ")group by page_id\n" +
+                    "order by sum_rank desc) as foo\n" +
+                    "LEFT OUTER JOIN page\n" +
                     "ON page_id = page.id", nativeQuery = true)
     List<Map<String, Float>> resultList(String firstLemmaName, List<String> lemmas, Long idSite);
 }

@@ -12,28 +12,31 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
 public class ParserForPage {
+    private static final Logger logger = LogManager.getLogger(PageListFinder.class);
     @Autowired
-    private UserAgentProperties userAgentProperties;
-   @Autowired
     SiteDataService dataService;
-    private String error="";
-    private String bufferPath;
-    private HashSet<String> pathList = new HashSet<>();
-    private List<Page> pageList = new ArrayList<>();
-    private String parentPath = "";
     String content = "";
     Long idSite = 0L;
     int code = 0;
-    private static final Logger logger = LogManager.getLogger(PageListFinder.class);
+    @Autowired
+    private UserAgentProperties userAgentProperties;
+    private String error = "";
+    private String bufferPath;
+    private final HashSet<String> pathList = new HashSet<>();
+    private List<Page> pageList = new ArrayList<>();
+    private String parentPath = "";
 
     public ParserForPage() {
 
@@ -90,9 +93,9 @@ public class ParserForPage {
 
     public void recursiveSiteCrawling() {
 
-        if (pageList.size() >= 100 ) {
+        if (pageList.size() >= 100) {
             dataService.addAllPage(pageList);
-            pageList=new ArrayList<>();
+            pageList = new ArrayList<>();
         }
         URL url = null;
 
@@ -100,8 +103,8 @@ public class ParserForPage {
             url = new URL(bufferPath);
 
         } catch (MalformedURLException e) {
-            error=error+e.getMessage()+"не соответствует формат адреса - "+bufferPath+"\n";
-            logger.error((char) 27 + "[31mWarning! "+"не соответствует формат адреса - "+bufferPath+"ошибка :\n"+e.getMessage() + (char)27 + "[0m");
+            error = error + e.getMessage() + "не соответствует формат адреса - " + bufferPath + "\n";
+            logger.error((char) 27 + "[31mWarning! " + "не соответствует формат адреса - " + bufferPath + "ошибка :\n" + e.getMessage() + (char) 27 + "[0m");
         }
         if (isValidUrl(bufferPath) && pathList.add(url.getPath())) {
 
@@ -111,42 +114,42 @@ public class ParserForPage {
                         .timeout(5000)
                         .execute();
             } catch (Exception e) {
-                logger.error((char) 27 + "[31mWarning! "+"не соответствует формат адреса - "+bufferPath+"ошибка :\n"+e.getMessage() + (char)27 + "[0m");
-                error=error+e.getMessage()+" код = "+code+" on path = "+bufferPath+"\n";
-                content=null;
+                logger.error((char) 27 + "[31mWarning! " + "не соответствует формат адреса - " + bufferPath + "ошибка :\n" + e.getMessage() + (char) 27 + "[0m");
+                error = error + e.getMessage() + " код = " + code + " on path = " + bufferPath + "\n";
+                content = null;
             }
             code = response.statusCode();
             if (code != 200) {
                 content = null;
-                error=error=error+"код ответа = "+code+"  при открытии адреса - "+bufferPath+"\n";
+                error = error = error + "код ответа = " + code + "  при открытии адреса - " + bufferPath + "\n";
             } else {
 
                 try {
                     content = response.parse().toString();
                 } catch (UnsupportedMimeTypeException e) {
-                    logger.error((char) 27 + "[31mWarning! "+bufferPath+"ошибка :\n"+e.getMessage() + (char)27 + "[0m");
+                    logger.error((char) 27 + "[31mWarning! " + bufferPath + "ошибка :\n" + e.getMessage() + (char) 27 + "[0m");
                     content = null;
-                    error= error=error+"ошибка при открытии контента страницы"+" код = "+code+" on path = "+bufferPath+"\n";
+                    error = error = error + "ошибка при открытии контента страницы" + " код = " + code + " on path = " + bufferPath + "\n";
                 } catch (IOException e) {
-                    logger.error((char) 27 + "[31mWarning! "+"ошибка :\n"+e.getMessage() + (char)27 + "[0m");
+                    logger.error((char) 27 + "[31mWarning! " + "ошибка :\n" + e.getMessage() + (char) 27 + "[0m");
                     content = null;
-                    error= error=error+"ошибка при открытии контента страницы"+" код = "+code+" on path = "+bufferPath+"\n";
+                    error = error = error + "ошибка при открытии контента страницы" + " код = " + code + " on path = " + bufferPath + "\n";
                 }
             }
             pageList.add(new Page(url.getPath(), code, content, idSite));
             if (content != null) {
                 Document document = Jsoup.parse(content);
-                logger.info("парсинг для "+bufferPath);
+                logger.info("парсинг для " + bufferPath);
                 Elements linksOnPage = document.select("a[href]");
-                for (Element element:linksOnPage){
-                    boolean ff=element.attr("abs:href").contains(parentPath);
+                for (Element element : linksOnPage) {
+                    boolean ff = element.attr("abs:href").contains(parentPath);
 
                 }
                 for (Element page1 : linksOnPage) {
 
                     bufferPath = page1.attr("abs:href");
 
-                    if (isValidUrl(bufferPath) && bufferPath.indexOf(parentPath)!=-1) {
+                    if (isValidUrl(bufferPath) && bufferPath.indexOf(parentPath) != -1) {
 
                         recursiveSiteCrawling();
                     }

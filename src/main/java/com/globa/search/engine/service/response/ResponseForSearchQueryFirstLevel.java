@@ -1,19 +1,18 @@
 package com.globa.search.engine.service.response;
 
 import com.globa.search.engine.data.SiteDataService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ResponseForSearchQueryFirstLevel {
 
-   private SiteDataService dataService;
-   private String site;
-   private String siteName;
-   private String uri;
-   private String title;
-   private String snippet;
-   private Float relevance;
+    private SiteDataService dataService;
+    private String site;
+    private String siteName;
+    private String uri;
+    private String title;
+    private String snippet;
+    private Float relevance;
 
     public ResponseForSearchQueryFirstLevel() {
     }

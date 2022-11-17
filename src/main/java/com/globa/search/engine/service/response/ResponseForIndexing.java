@@ -21,16 +21,16 @@ public class ResponseForIndexing {
     private EntityManager em;
 
     @Transactional(readOnly = true)
-    public boolean isIndexing(){
-        String nativeSqlQuery=
+    public boolean isIndexing() {
+        String nativeSqlQuery =
                 "select id from site where status='INDEXING';";
         List result = em.createNativeQuery(nativeSqlQuery).getResultList();
-        System.out.println("size = "+result.size());
-       if(result.size()<1){
-           return true;
-       }else
+        System.out.println("size = " + result.size());
+        if (result.size() < 1) {
+            return true;
+        } else
 
-           error.getError();
+            error.getError();
         return false;
     }
 }

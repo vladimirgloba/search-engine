@@ -42,7 +42,7 @@ public class ResultService {
 
         logger.info(sqlString(firstLemma, site.getId()));
         List result = nativeQueryRepository.result(sqlString(firstLemma, idSIte));
-        iteration=result.size()<50? result.size() : 50;
+        iteration = result.size() < 50 ? result.size() : 50;
         List<ResponseForSearchQueryFirstLevel> responseForSearchQueryFirstLevels = new ArrayList<>();
         responseForSearchQueryFirstLevels = result.size() > 0 ? dataList(result, iteration, lemmasString, site, dataService) : new ArrayList<>();
         if (!responseForSearchQueryFirstLevels.isEmpty()) {

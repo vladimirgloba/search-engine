@@ -9,16 +9,15 @@ public class StatisticFinal {
 
     @Autowired
     SiteDataService dataService;
-
-    private Boolean result=true;
-
     @Autowired
     Statistics statistics;
+    private Boolean result = true;
 
     public StatisticFinal() {
 
     }
-    public void getStatistic(){
+
+    public void getStatistic() {
         statistics.getStatistic();
     }
 

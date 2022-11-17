@@ -59,7 +59,7 @@ public class ResponseForSearchQueryFromAllSite {
 
         for (Site site : allSites) {
             List<ResponseForSearchQueryFirstLevel> firstLevels = listFinder.sortedPagesMapWithSQL(query, site.getUrl());
-            result=site.getStatus().toString().equals("INDEXED");
+            result = site.getStatus().toString().equals("INDEXED");
             if (!firstLevels.isEmpty()) {
                 this.data.addAll(firstLevels);
                 this.count = this.count + listFinder.getTotalSize();
