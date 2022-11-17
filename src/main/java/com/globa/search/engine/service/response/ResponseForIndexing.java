@@ -10,17 +10,20 @@ import java.util.List;
 
 @Component
 public class ResponseForIndexing {
+
     @Autowired
     NoError noError;
+
     @Autowired
     ResponseError error;
+
     @PersistenceContext
     private EntityManager em;
+
     @Transactional(readOnly = true)
     public boolean isIndexing(){
         String nativeSqlQuery=
                 "select id from site where status='INDEXING';";
-
         List result = em.createNativeQuery(nativeSqlQuery).getResultList();
         System.out.println("size = "+result.size());
        if(result.size()<1){

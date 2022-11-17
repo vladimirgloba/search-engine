@@ -15,6 +15,7 @@ public class StatisticController {
 
     @Autowired
     StatisticFinal stat;
+
     private static final Logger logger = LogManager.getLogger(StatisticController.class);
     public StatisticController() {
     }

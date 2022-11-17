@@ -4,10 +4,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Total {
-   private Long sites;
+    boolean isIndexing;
+    private Long sites;
     private Long pages;
     private Long lemmas;
-    boolean isIndexing;
 
     public Total() {
     }

@@ -7,21 +7,21 @@ import java.io.IOException;
 import java.util.*;
 
 public class LemmaFinder {
-    private final LuceneMorphology luceneMorphology;
     private static final String WORD_TYPE_REGEX = "\\W\\w&&[^а-яА-Я\\s]";
     private static final String[] particlesNames = new String[]{"МЕЖД", "ПРЕДЛ", "СОЮЗ"};
-
-    public static LemmaFinder getInstance() throws IOException {
-        LuceneMorphology morphology= new RussianLuceneMorphology();
-        return new LemmaFinder(morphology);
-    }
+    private final LuceneMorphology luceneMorphology;
 
     private LemmaFinder(LuceneMorphology luceneMorphology) {
         this.luceneMorphology = luceneMorphology;
     }
 
-    private LemmaFinder(){
+    private LemmaFinder() {
         throw new RuntimeException("Disallow construct");
+    }
+
+    public static LemmaFinder getInstance() throws IOException {
+        LuceneMorphology morphology = new RussianLuceneMorphology();
+        return new LemmaFinder(morphology);
     }
 
     /**
@@ -60,8 +60,6 @@ public class LemmaFinder {
 
         return lemmas;
     }
-
-
     /**
      * @param text текст из которого собираем все леммы
      * @return набор уникальных лемм найденных в тексте

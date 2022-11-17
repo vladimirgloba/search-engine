@@ -14,9 +14,12 @@ import java.util.List;
 
 @Component
 public class Statistics {
+
     private static final Logger logger = LogManager.getLogger(Statistics.class);
+
     @Autowired
     private SiteDataService dataService;
+
     private Total total;
     private List<Detailed> detailed;
 
@@ -33,7 +36,6 @@ public class Statistics {
         this.total = new Total(sites, pages, lemmas, isIndexing);
 
     }
-
 
     private Detailed setDetailed(Site site) {
         String url = site.getUrl().substring(0, site.getUrl().length() - 1);
@@ -55,7 +57,6 @@ public class Statistics {
         for (Site site : dataService.finedAllSites()) {
             detailed.add(setDetailed(site));
         }
-
     }
 
     private boolean isSitesIndexing() {

@@ -164,7 +164,6 @@ public class RunnableWithHardQuery implements Runnable { private SiteDataService
             pageList.add(new Page(url.getPath(), code,content,idSite));
 
             System.out.println("in pageList");
-            //System.out.println("in pageList size of list = "+pageList.size()+" url = "+buffer +"content size = "+content.length()+" code = "+code);
             if (content != null) {
                 Document document = Jsoup.parse(content);
                 System.out.println("парсинг для "+buffer);
@@ -295,9 +294,6 @@ if(noRepeat.size()==5000){
                 bodyOfQuery=bodyOfQuery+getBody (idOfPage, lemmas );
                 iterator++;
         }
-
-
-
 
         }
         if(iterator>1){

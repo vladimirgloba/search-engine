@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class AddingController {
+    private static final Logger logger = LogManager.getLogger(AddingController.class);
+
     @Autowired
     private AddingOrUpdatingPage result;
 
@@ -27,7 +29,6 @@ public class AddingController {
     @Autowired
     private NoError noError;
 
-    private static final Logger logger = LogManager.getLogger(AddingController.class);
     @PostMapping("indexPage")
     @ResponseBody
     public Object getSearchQuery(@RequestParam(required = false, name = "url", defaultValue = "") String url) {
@@ -36,7 +37,7 @@ public class AddingController {
             prowler.nativeQueryForPage(url);
             return noError;
         } else {
-            logger.error((char) 27 + "[31mWarning! "+"ошибка при загрузке страницы" + (char)27 + "[0m");
+            logger.error((char) 27 + "[31mWarning! " + "ошибка при загрузке страницы" + (char) 27 + "[0m");
             return error;
         }
     }

@@ -4,7 +4,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ResponseError {
+
     Boolean result=false;
+
     String error= "Индексация не запущена";
 
     public ResponseError() {

@@ -1,6 +1,5 @@
 package com.globa.search.engine.data;
 
-import com.globa.search.engine.controller.AddingController;
 import com.globa.search.engine.model.*;
 import com.globa.search.engine.repository.*;
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +13,7 @@ import java.util.*;
 
 @Service
 public class SiteDataService {
+    private static final Logger logger = LogManager.getLogger(SiteDataService.class);
     //неиспользованные импорты и переменные необходимы при изменении
     // обхода страниц(в коде несколько реализаций), я их использовал
     // для тестирования скорости и памяти
@@ -35,7 +35,6 @@ public class SiteDataService {
     @Autowired
     private SiteRepository siteRepository;
 
-    private static final Logger logger = LogManager.getLogger(SiteDataService.class);
     public SiteDataService() {
 
     }
@@ -105,20 +104,15 @@ public class SiteDataService {
         return fieldRepository.findByTag(tagName).get(0).getId();
     }
 
-    public Map<Long, Float> sortedPageMap(List<Long> listPage, Map<String, Integer> mapOfLemmas, Long idSite) {
+    public Map<Long, Float> sortedPageMap(List<Long> listPage, Map.Entry<String, Integer> mapOfLemmas, Long idSite) {
         List<Long> lemmas = new ArrayList<>();
         Map<String, Float> buffer = new HashMap<>();
-        for (Map.Entry<String, Integer> entry : mapOfLemmas.entrySet()) {
-            lemmas.add(finedIdByLemmaName(entry.getKey(), idSite));
-        }
+            lemmas.add(finedIdByLemmaName(mapOfLemmas.getKey(), idSite));
         Map<Long, Float> bufferMap = new HashMap<>();
         for (Long idPage : listPage) {
             List<Index> indexList = indexRepository.finedIndexByIdLemmaAndListOfIdPages(idPage, lemmas);
             Double total = indexList.stream().mapToDouble(Index::getRank).sum();
             bufferMap.put(idPage, Float.valueOf(String.valueOf(total)));
-        }
-        for (Map.Entry<Long, Float> entry : bufferMap.entrySet()) {
-
         }
         return bufferMap;
     }
@@ -153,7 +147,7 @@ public class SiteDataService {
         try {
             return lemmaRepository.findByLemma(lemmaName, siteId).get(0).getId();
         } catch (Exception e) {
-            logger.error((char) 27 + "[31mWarning! "+"ошибка лемматизатора в методе lemmaRepository.findByLemma" + (char)27 + "[0m");
+            logger.error((char) 27 + "[31mWarning! " + "лемма " +lemmaName+" не найдена"+ (char) 27 + "[0m");
 
             return 0;
         }
@@ -167,7 +161,7 @@ public class SiteDataService {
         try {
             return lemmaRepository.findByLemma(lemmaName, idSite).get(0).getFrequency();
         } catch (Exception e) {
-            logger.error((char) 27 + "[31mWarning! "+"ошибка лемматизатора в методе lemmaRepository.findByLemma" + (char)27 + "[0m");
+            logger.error((char) 27 + "[31mWarning! " + "ошибка лемматизатора в методе lemmaRepository.findByLemma" + (char) 27 + "[0m");
             return 0;
         }
     }
@@ -176,7 +170,7 @@ public class SiteDataService {
         try {
             return siteRepository.findBySIteUrl(url).get(0);
         } catch (Exception e) {
-            logger.error((char) 27 + "[31mWarning! "+"ошибка лемматизатора в методе siteRepository.findBySIteUrl" + (char)27 + "[0m");
+            logger.error((char) 27 + "[31mWarning! " + "ошибка лемматизатора в методе siteRepository.findBySIteUrl" + (char) 27 + "[0m");
             return null;
         }
     }

@@ -144,14 +144,7 @@ if(response.statusCode()==200) {
     }
 
 
-
-
-
-
-
-
     //Реализуем метод compute().
-
     @Override
     protected void compute() {
 for(ListOfObjectProperties.Service service:list.getServices()) {

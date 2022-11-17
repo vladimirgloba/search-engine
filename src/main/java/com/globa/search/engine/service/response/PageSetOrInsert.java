@@ -29,11 +29,13 @@ import java.util.Map;
 @Transactional
 public class PageSetOrInsert {
     private static final Logger logger = LogManager.getLogger(PageSetOrInsert.class);
+
     @Autowired
     SiteDataService dataService;
 
     @Autowired
     PageParameters pageParameters;
+
     @PersistenceContext
     private EntityManager em;
 
@@ -54,12 +56,9 @@ public class PageSetOrInsert {
             return true;
         } else
 
-
             return false;
     }
 
-
-    /////////////////////////////////
     private boolean pageParameters(String uri) {
 
         List<String> allPath = getPath(uri);
@@ -307,7 +306,6 @@ public class PageSetOrInsert {
 
     }
 
-    /////////////////
     private List<String> getPath(String uri) {
         URL url;
         try {

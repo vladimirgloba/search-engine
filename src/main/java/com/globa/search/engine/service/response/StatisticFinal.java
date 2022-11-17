@@ -6,9 +6,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StatisticFinal {
+
     @Autowired
     SiteDataService dataService;
+
     private Boolean result=true;
+
     @Autowired
     Statistics statistics;
 

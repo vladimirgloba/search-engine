@@ -10,15 +10,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Component
 public class ResponseForSearchQueryFromAllSite {
+
     @Autowired
     PageListFinder listFinder;
+
     @Autowired
     SiteDataService dataService;
+
     private boolean result;
-    private int count=0;
-    private List<ResponseForSearchQueryFirstLevel> data=new ArrayList<>();
+
+    private int count = 0;
+
+    private List<ResponseForSearchQueryFirstLevel> data = new ArrayList<>();
+
     public ResponseForSearchQueryFromAllSite() {
     }
 
@@ -45,18 +52,23 @@ public class ResponseForSearchQueryFromAllSite {
     public void setData(List<ResponseForSearchQueryFirstLevel> data) {
         this.data = data;
     }
-    public void getResponse(String query){
-        List<Site>allSites=dataService.finedAllSites();
 
-        for(Site site:allSites){
+    public void getResponse(String query) {
+        List<Site> allSites = dataService.finedAllSites();
 
-            this.data.addAll(listFinder.sortedPagesMapWithSQL(query, site.getUrl()));
-            this.count=this.count+listFinder.getTotalSize();
+
+        for (Site site : allSites) {
+            List<ResponseForSearchQueryFirstLevel> firstLevels = listFinder.sortedPagesMapWithSQL(query, site.getUrl());
+            result=site.getStatus().toString().equals("INDEXED");
+            if (!firstLevels.isEmpty()) {
+                this.data.addAll(firstLevels);
+                this.count = this.count + listFinder.getTotalSize();
+            }
         }
-            this.result=data.isEmpty()?false:true;
-        if(result){
 
-            data=data.stream().sorted(Collections.reverseOrder((o1, o2)->o1.getRelevance().
+        if (!data.isEmpty()) {
+
+            data = data.stream().sorted(Collections.reverseOrder((o1, o2) -> o1.getRelevance().
                     compareTo(o2.getRelevance()))).collect(Collectors.toList());
         }
     }
