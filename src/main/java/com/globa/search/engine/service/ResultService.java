@@ -11,24 +11,18 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Service
-@Repository
-@Transactional
-
 public class ResultService {
 
     private static final Logger logger = LogManager.getLogger(ResultService.class);
     @Autowired
     private NativeQueryRepository nativeQueryRepository;
-
     private int totalSize = 0;
 
 
@@ -39,7 +33,6 @@ public class ResultService {
             lemmas = lemmas + "'" + str + "', ";
         }
         lemmas = lemmas.substring(0, lemmas.length() - 2);
-
         logger.info(sqlString(firstLemma, site.getId()));
         List result = nativeQueryRepository.result(sqlString(firstLemma, idSIte));
         iteration = result.size() < 50 ? result.size() : 50;
@@ -77,12 +70,7 @@ public class ResultService {
 
             responseForSearchQueryFirstLevels.add(responseForSearchQueryFirstLevel);
         }
-        System.out.println("size ============================== " + responseForSearchQueryFirstLevels.size());
-        for (ResponseForSearchQueryFirstLevel response : responseForSearchQueryFirstLevels) {
-            System.out.println(response.getTitle() + " = " + response.getRelevance().toString());
-        }
         return responseForSearchQueryFirstLevels;
-
     }
 
     private String snippetFinder(Set<String> lemmasList, Element element, String snippet) {

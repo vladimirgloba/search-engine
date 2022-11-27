@@ -1,10 +1,7 @@
 package com.globa.search.engine.service.response;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class NoError {
-    private boolean result = true;
+    private final boolean result = true;
 
     public NoError() {
     }
@@ -13,7 +10,4 @@ public class NoError {
         return result;
     }
 
-    public void setResult() {
-        this.result = true;
-    }
 }

@@ -1,17 +1,17 @@
-package com.globa.search.engine.service.response;
+package com.globa.search.engine.service;
 
 import com.globa.search.engine.data.SiteDataService;
 import com.globa.search.engine.model.Site;
-import com.globa.search.engine.service.PageListFinder;
+import com.globa.search.engine.service.response.ResponseForSearchQueryFirstLevel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class ResponseForSearchQueryFromAllSite {
 
     @Autowired

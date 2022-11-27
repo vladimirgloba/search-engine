@@ -1,19 +1,16 @@
-package com.globa.search.engine.service.response;
+package com.globa.search.engine.service;
 
+import com.globa.search.engine.service.response.SearchError;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-@Scope("prototype")
+@Service
 public class RequestForSearchQuery {
 
     private static final Logger logger = LogManager.getLogger(RequestForSearchQuery.class);
 
-    @Autowired
-    private SearchError error;
 
     @Autowired
     private ResponseForSearchQuery responseForSearchQuery;//для одного сайта
@@ -28,6 +25,7 @@ public class RequestForSearchQuery {
     private Object responseForOneSite(String siteName, String searchQuery) {
         responseForSearchQuery.getResponse(searchQuery, siteName);
         if (responseForSearchQuery.getData().size() == 0) {
+            SearchError error = new SearchError();
             error.getForError();
             logger.error((char) 27 + "[31mWarning! " + "По запросу ничего не найдено" + (char) 27 + "[0m");
             error.setError("По запросу ничего не найдено");
@@ -41,6 +39,7 @@ public class RequestForSearchQuery {
     private Object responseForAllSite(String searchQuery) {
         responseForSearchQueryFromAllSite.getResponse(searchQuery);
         if (responseForSearchQueryFromAllSite.getData().size() == 0) {
+            SearchError error = new SearchError();
             error.getForError();
             error.setError("По запросу ничего не найдено");
             logger.error((char) 27 + "[31mWarning! " + "По запросу ничего не найдено" + (char) 27 + "[0m");
@@ -56,6 +55,7 @@ public class RequestForSearchQuery {
     public Object getResponse(String siteName, String searchQuery) {
         Object object = new Object();
         if (searchQuery.length() < 3) {
+            SearchError error = new SearchError();
             error.getForError();
             error.setError("Задан пустой поисковый запрос");
             logger.error((char) 27 + "[31mWarning! " + "Задан пустой поисковый запрос" + (char) 27 + "[0m");
@@ -66,7 +66,7 @@ public class RequestForSearchQuery {
             object = responseForOneSite(siteName, searchQuery);
         }
         if (siteName.length() == 0 && searchQuery.length() > 2) {
-            System.out.println("правильно");
+
             object = responseForAllSite(searchQuery);
         }
         return object;

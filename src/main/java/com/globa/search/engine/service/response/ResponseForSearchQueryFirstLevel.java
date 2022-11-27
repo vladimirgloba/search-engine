@@ -1,9 +1,8 @@
 package com.globa.search.engine.service.response;
 
 import com.globa.search.engine.data.SiteDataService;
-import org.springframework.stereotype.Component;
 
-@Component
+
 public class ResponseForSearchQueryFirstLevel {
 
     private SiteDataService dataService;

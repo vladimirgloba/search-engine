@@ -1,18 +1,20 @@
-package com.globa.search.engine.service.response;
+package com.globa.search.engine.service;
 
 import com.globa.search.engine.data.SiteDataService;
 import com.globa.search.engine.model.Site;
 import com.globa.search.engine.model.Status;
+import com.globa.search.engine.service.response.Detailed;
+import com.globa.search.engine.service.response.Total;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Service
 public class Statistics {
 
     private static final Logger logger = LogManager.getLogger(Statistics.class);

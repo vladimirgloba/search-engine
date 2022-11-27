@@ -1,8 +1,5 @@
 package com.globa.search.engine.service.response;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class SearchError {
     private boolean result;
     private String error;

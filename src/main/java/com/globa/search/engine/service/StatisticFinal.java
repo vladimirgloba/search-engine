@@ -1,10 +1,10 @@
-package com.globa.search.engine.service.response;
+package com.globa.search.engine.service;
 
 import com.globa.search.engine.data.SiteDataService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class StatisticFinal {
 
     @Autowired

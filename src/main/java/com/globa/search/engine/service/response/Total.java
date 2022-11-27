@@ -1,8 +1,5 @@
 package com.globa.search.engine.service.response;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Total {
     boolean isIndexing;
     private Long sites;

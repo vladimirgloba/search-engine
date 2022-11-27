@@ -1,6 +1,6 @@
 package com.globa.search.engine.controller;
 
-import com.globa.search.engine.service.response.StatisticFinal;
+import com.globa.search.engine.service.StatisticFinal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,21 +2,21 @@ get:
   services:
 #    - name: skillbox.ru
 #      url: https://www.skillbox.ru
-#    - name: playback.ru
-#      url: https://www.playback.ru
+    - name: playback.ru
+      url: https://www.playback.ru
 #    - name: lenta.ru
 #      url: https://lenta.ru
 
-#    - name: radiomv.ru
-#      url: http://radiomv.ru
+    - name: radiomv.ru
+      url: http://radiomv.ru
 #    - name: svetlovka.ru
 #      url: https://www.svetlovka.ru
-#    - name: ipfran.ru
-#      url: https://ipfran.ru
+    - name: ipfran.ru
+      url: https://ipfran.ru
 #    - name: nikoartgallery.com
 #      url: https://nikoartgallery.com
-#    - name: et-cetera.ru
-#      url: https://et-cetera.ru/mobile
+    - name: et-cetera.ru
+      url: https://et-cetera.ru/mobile
     - name: lutherancathedral
       url: https://www.lutherancathedral.ru
 #    - name: volochek.life

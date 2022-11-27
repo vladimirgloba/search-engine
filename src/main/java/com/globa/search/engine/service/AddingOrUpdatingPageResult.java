@@ -1,8 +1,8 @@
-package com.globa.search.engine.service.response;
+package com.globa.search.engine.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class AddingOrUpdatingPageResult {
 
     private boolean result = false;

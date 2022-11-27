@@ -1,6 +1,6 @@
 package com.globa.search.engine.controller;
 
-import com.globa.search.engine.service.response.RequestForSearchQuery;
+import com.globa.search.engine.service.RequestForSearchQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class SearchController {
-    @Autowired
-    RequestForSearchQuery requestForSearchQuery;
+
+@Autowired
+RequestForSearchQuery requestForSearchQuery;
 
     @RequestMapping("/search")
     @ResponseBody

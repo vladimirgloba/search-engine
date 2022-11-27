@@ -1,10 +1,10 @@
-package com.globa.search.engine.service.response;
+package com.globa.search.engine.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
-@Component
+@Service
 public class PageParameters {
     private String sitePath;
     private String path;

@@ -1,17 +1,17 @@
-package com.globa.search.engine.service.response;
+package com.globa.search.engine.service;
 
 import com.globa.search.engine.data.SiteDataService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component
+@Service
 public class AddingOrUpdatingPage {
 
     private static final Logger logger = LogManager.getLogger(AddingOrUpdatingPage.class);

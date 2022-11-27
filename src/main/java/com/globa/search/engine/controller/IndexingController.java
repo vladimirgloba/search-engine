@@ -3,7 +3,7 @@ package com.globa.search.engine.controller;
 import com.globa.search.engine.data.SiteDataService;
 import com.globa.search.engine.service.ForMultithreadedAddition;
 import com.globa.search.engine.service.ListOfObjectProperties;
-import com.globa.search.engine.service.UserAgentProperties;
+import com.globa.search.engine.configuration.UserAgentProperties;
 import com.globa.search.engine.service.response.NoError;
 import com.globa.search.engine.service.response.ResponseError;
 import org.apache.logging.log4j.LogManager;
@@ -27,12 +27,6 @@ public class IndexingController {
     private SiteDataService dataService;
 
     @Autowired
-    private ResponseError error;
-
-    @Autowired
-    private NoError noError;
-
-    @Autowired
     private UserAgentProperties userAgentProperties;
 
     @Autowired
@@ -49,7 +43,7 @@ public class IndexingController {
     @ResponseBody
     public Object indexing() {
         logger.info("инициализация контроллера \"/startIndexing\"");
-        getListOfSite();//получаем список сайтов для индексации
+        getListOfSite();
         executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (Map.Entry<String, String> entry : pathAndNameSite.entrySet()) {
             logger.info("инициализация многопоточного режима \"/startIndexing\"");
@@ -58,10 +52,13 @@ public class IndexingController {
         executorService.shutdown();
         if (!executorService.isTerminated()) {
             logger.info("успешное завершение работы контроллера \"/startIndexing\"");
+            NoError noError=new NoError();
             return noError;
-        } else
+        } else {
+            ResponseError error=new ResponseError();
             logger.error((char) 27 + "[31mWarning! " + "ошибка в условии:!service.isTerminated()" + (char) 27 + "[0m");
-        return error;
+            return error;
+        }
     }
 
     @RequestMapping("/stopIndexing")
@@ -71,8 +68,10 @@ public class IndexingController {
         if (!executorService.isTerminated()) {
             executorService.shutdownNow();
             logger.info("успешное завершение работы контроллера \"/startIndexing\"");
+            NoError noError=new NoError();
             return noError;
         } else {
+            ResponseError error=new ResponseError();
             logger.error((char) 27 + "[31mWarning! " + "ошибка в условии:!service.isTerminated()" + (char) 27 + "[0m");
             return error;
         }

@@ -1,30 +1,30 @@
 package com.globa.search.engine.service.response;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class ResponseError {
 
-    Boolean result = false;
+    private final boolean result = false;
 
-    String error = "Индексация не запущена";
+    private String error;
 
     public ResponseError() {
+        this.error = "Индексация не запущена";
+    }
+
+    public boolean isResult() {
+        return result;
+    }
+
+
+
+    public void setError(String error) {
+        this.error = error;
     }
 
     public Boolean getResult() {
         return result;
     }
 
-    public void setResult(Boolean result) {
-        this.result = result;
-    }
-
     public String getError() {
         return error;
-    }
-
-    public void setError() {
-        this.error = "Индексация не запущена";
     }
 }

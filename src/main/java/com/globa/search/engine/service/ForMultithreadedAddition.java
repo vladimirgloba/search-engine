@@ -1,5 +1,6 @@
 package com.globa.search.engine.service;
 
+import com.globa.search.engine.configuration.UserAgentProperties;
 import com.globa.search.engine.data.SiteDataService;
 import com.globa.search.engine.model.Page;
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +44,7 @@ public class ForMultithreadedAddition implements Runnable {
         this.buffer = pathName;
     }
 
-    //проверка на валидность адреса
+
     private boolean isValidUrl(String url) {
         Pattern pattern = Pattern.compile("^(http(s)?://)?[a-z0-9-]+\\.(.[a-z0-9-]+)+(:[0-9]+)?(/.*)?$");
         Matcher matcher = pattern.matcher(url);

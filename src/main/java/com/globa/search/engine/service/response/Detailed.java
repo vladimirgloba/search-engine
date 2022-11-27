@@ -1,10 +1,8 @@
 package com.globa.search.engine.service.response;
 
 import com.globa.search.engine.model.Status;
-import org.springframework.stereotype.Component;
 
 
-@Component
 public class Detailed {
     private String url;
     private String name;

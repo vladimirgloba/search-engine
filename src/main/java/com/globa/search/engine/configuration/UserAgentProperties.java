@@ -1,4 +1,4 @@
-package com.globa.search.engine.service;
+package com.globa.search.engine.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

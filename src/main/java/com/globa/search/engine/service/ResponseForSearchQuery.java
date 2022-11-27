@@ -1,20 +1,20 @@
-package com.globa.search.engine.service.response;
+package com.globa.search.engine.service;
 
-import com.globa.search.engine.service.PageListFinder;
+import com.globa.search.engine.service.response.ResponseForSearchQueryFirstLevel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Service
 public class ResponseForSearchQuery {
     @Autowired
     PageListFinder listFinder;
 
     private boolean result;
     private int count;
-    private List<ResponseForSearchQueryFirstLevel>data=new ArrayList<>();
+    private List<ResponseForSearchQueryFirstLevel> data = new ArrayList<>();
 
     public ResponseForSearchQuery() {
     }
@@ -42,11 +42,12 @@ public class ResponseForSearchQuery {
     public void setData(List<ResponseForSearchQueryFirstLevel> data) {
         this.data = data;
     }
-    public void getResponse(String searchQuery,String sitePath)  {
-        sitePath=sitePath+"/";
-        this.data=listFinder.sortedPagesMapWithSQL(searchQuery, sitePath);
-        this.count=listFinder.getTotalSize();
-        this.result=data.isEmpty()?false:true;
+
+    public void getResponse(String searchQuery, String sitePath) {
+        sitePath = sitePath + "/";
+        this.data = listFinder.sortedPagesMapWithSQL(searchQuery, sitePath);
+        this.count = listFinder.getTotalSize();
+        this.result = !data.isEmpty();
     }
 
 }

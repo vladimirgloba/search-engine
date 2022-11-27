@@ -1,9 +1,9 @@
 package com.globa.search.engine.controller;
 
-import com.globa.search.engine.service.response.AddingOrUpdatingPage;
-import com.globa.search.engine.service.response.AddingOrUpdatingPageResult;
+import com.globa.search.engine.service.AddingOrUpdatingPage;
+import com.globa.search.engine.service.AddingOrUpdatingPageResult;
 import com.globa.search.engine.service.response.NoError;
-import com.globa.search.engine.service.response.PageSetOrInsert;
+import com.globa.search.engine.service.PageSetOrInsert;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,7 @@ public class AddingController {
     @Autowired
     private AddingOrUpdatingPageResult error;
 
-    @Autowired
-    private NoError noError;
+
 
     @PostMapping("indexPage")
     @ResponseBody
@@ -35,6 +34,7 @@ public class AddingController {
         logger.info("инициализация контроллера \"/startIndexing\"");
         if (result.getResult(url)) {
             prowler.nativeQueryForPage(url);
+            NoError noError=new NoError();
             return noError;
         } else {
             logger.error((char) 27 + "[31mWarning! " + "ошибка при загрузке страницы" + (char) 27 + "[0m");
