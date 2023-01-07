@@ -2,7 +2,7 @@
 educational project
 <h1 align="center" color="width">Hi there, I'm Vladimir
         <img src="https://github.com/blackcater/blackcater/raw/main/images/Hi.gif" height="32" /></h1>
-    <h2 align="center" color="width">Computer science student, IT news writer from Russia 🇷🇺</h2>
+    <h2 align="center" color="width">JAVA - developer</h2>
     <h2>
         О себе:
     </h2>
